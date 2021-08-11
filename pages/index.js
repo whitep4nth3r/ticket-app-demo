@@ -31,8 +31,8 @@ function cleanText(text) {
 }
 
 const CLOUD_NAME = "the-claw";
-export const IMG_WIDTH = 831;
-export const IMG_HEIGHT = 466;
+const IMG_WIDTH = 831;
+const IMG_HEIGHT = 466;
 
 function generateImageUrl({
   name,
@@ -140,23 +140,21 @@ export default function Index({ name, isShared }) {
   /* Event info config */
   const eventName = "My awesome event";
   const ticketAppUrl = "https://my-awesome-ticket-app.dev";
-  const ticketNo = generateTicketNo(name);
   const title = `${decodeURIComponent(name)} is Going! | ${eventName}`;
   const description = `Join ${name} at ${eventName}. Grab your free ticket on ${ticketAppUrl}.`;
-  const ogUrl = `${ticketAppUrl}?name=${name}&shared=true`;
 
-  /* Image URL config */
+  /* Generate a fake ticket number */
+  const ticketNo = generateTicketNo(name);
+
+  /* Build the Cloudinary image URL */
   const imageUrl = generateImageUrl({
     name: name,
     ticketNo: ticketNo,
     imagePublicID: "ticket_template.png",
   });
 
-  /* Page text config */
-  const headline = isShared ? `${name} is going!` : "You're in!";
-  const subtitle = isShared
-    ? `Don't miss out! Sign up to register and join ${name} at ${eventName}.`
-    : `Add the event to your calendar and invite your friends to join you at ${eventName}.`;
+  /* Configure Open Graph URL */
+  const ogUrl = `${ticketAppUrl}?name=${name}&shared=true`;
 
   /* Twitter Config */
   const tweetText = encodeURIComponent(
@@ -168,6 +166,12 @@ export default function Index({ name, isShared }) {
   /* LinkedIn Config */
   const linkedInShareUrl = `${ticketAppUrl}?name%3D${name}&shared%3Dtrue`;
   const linkedInShareHref = `https://www.linkedin.com/sharing/share-offsite/?url=${linkedInShareUrl}`;
+
+  /* Page text config */
+  const headline = isShared ? `${name} is going!` : "You're in!";
+  const subtitle = isShared
+    ? `Don't miss out! Sign up to register and join ${name} at ${eventName}.`
+    : `Add the event to your calendar and invite your friends to join you at ${eventName}.`;
 
   return (
     <main>
@@ -193,13 +197,21 @@ export default function Index({ name, isShared }) {
       </Head>
       <h1>{headline}</h1>
       <p>{subtitle}</p>
+
       <img alt="My ticket" src={imageUrl} />
-      <a href={twitterShareHref} target="_blank" rel="noreferrer">
-        Share on Twitter
-      </a>
-      <a href={linkedInShareHref} target="_blank" rel="noreferrer">
-        Share on LinkedIn
-      </a>
+
+      {isShared && <a href="https://my-awesome-ticket-app.dev/sign-up">Sign up!</a>}
+
+      {!isShared && (
+        <>
+          <a href={twitterShareHref} target="_blank" rel="noreferrer">
+            Share on Twitter
+          </a>
+          <a href={linkedInShareHref} target="_blank" rel="noreferrer">
+            Share on LinkedIn
+          </a>
+        </>
+      )}
     </main>
   );
 }
