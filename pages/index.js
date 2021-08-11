@@ -158,9 +158,9 @@ export default function Index({ name, isShared }) {
 
   /* Twitter Config */
   const tweetText = encodeURIComponent(
-    "I just got my ticket to an awesome event!\n\nGrab your free ticket and join me!",
+    "I just got my ticket to an awesome event!\n\nGrab your free ticket and join me!\n\n",
   );
-  const twitterShareUrl = encodeURIComponent(`\n\n${ticketAppUrl}?name=${name}&shared=true`);
+  const twitterShareUrl = encodeURIComponent(`${ticketAppUrl}?name=${name}&shared=true`);
   const twitterShareHref = `https://twitter.com/intent/tweet?url=${twitterShareUrl}&text=${tweetText}`;
 
   /* LinkedIn Config */
