@@ -2,21 +2,6 @@
 
 import Head from "next/head";
 
-/* Generate a ticket number from a given string */
-function generateTicketNo(string) {
-  var hash = 0;
-  if (string.length === 0) {
-    return hash;
-  }
-  for (let i = 0; i < string.length; i++) {
-    var char = string.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-
-  return `000${hash.toString().replace("-", "").substr(0, 4)}`;
-}
-
 /**
  * Encode characters for Cloudinary URL
  * Encodes some not allowed in Cloudinary parameter values twice:
@@ -144,7 +129,7 @@ export default function Index({ name, isShared }) {
   const description = `Join ${name} at ${eventName}. Grab your free ticket on ${ticketAppUrl}.`;
 
   /* Generate a fake ticket number */
-  const ticketNo = generateTicketNo(name);
+  const ticketNo = `000${Math.random().toString().substr(2, 4)}`;
 
   /* Build the Cloudinary image URL */
   const imageUrl = generateImageUrl({
